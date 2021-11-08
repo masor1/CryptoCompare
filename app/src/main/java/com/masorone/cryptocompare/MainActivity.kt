@@ -1,6 +1,7 @@
 package com.masorone.cryptocompare
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 
@@ -12,7 +13,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initViewModel()
-        loadData()
+        observePriceList()
+        observeDetailInfo()
     }
 
     private fun initViewModel() {
@@ -22,8 +24,16 @@ class MainActivity : AppCompatActivity() {
         )[MainViewModel::class.java]
     }
 
-    private fun loadData() {
-        vm.loadData()
+    private fun observePriceList() {
+        vm.priceList.observe(this, {
+            Log.d(TAG, "List<CoinPriceInfo> -> $it")
+        })
+    }
+
+    private fun observeDetailInfo() {
+        vm.getDetailInfo("BTC").observe(this, {
+            Log.d(TAG, "CoinPriceInfo -> $it")
+        })
     }
 
     companion object {
