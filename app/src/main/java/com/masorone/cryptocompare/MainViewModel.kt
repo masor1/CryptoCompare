@@ -15,16 +15,19 @@ class MainViewModel(context: Context) : ViewModel() {
     private val db = CoinDatabase.getInstance(context)
     val priceList = db.coinPriceInfoDao().getPriceList()
 
-    fun getTopCoinsInfo() {
+    fun loadData() {
         compositeDisposable.add(
             ApiFactory.apiService.getTopCoinsInfo()
+                .map { it.data?.map { datum -> datum.coinInfo?.name }?.joinToString(",") }
+                .flatMap { ApiFactory.apiService.getFullPriceList(fSyms = it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    val names = it.data?.map { datum -> datum.coinInfo?.name }?.joinToString(",")
-                    Log.d(TAG, "names -> $names")
+
+
+                    Log.d(TAG, "CoinPriceInfoRawData -> $it")
                 }, {
-                    Log.d(TAG, "Error(CoinInfoListOfData) -> $it")
+                    Log.d(TAG, "Error(CoinPriceInfoRawData) -> $it")
                 })
         )
     }

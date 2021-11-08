@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        vm.getTopCoinsInfo()
+        vm.loadData()
     }
 
     companion object {
