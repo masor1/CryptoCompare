@@ -39,7 +39,7 @@ class CoinDetailActivity : AppCompatActivity() {
         private const val COIN_FROM_SYMBOL = "coin_from_symbol"
         private const val TAG = "CoinDetailActivity"
 
-        fun getIntent(context: Context, fSym: String): Intent {
+        fun newIntent(context: Context, fSym: String): Intent {
             val intent = Intent(context, CoinDetailActivity::class.java)
             intent.putExtra(COIN_FROM_SYMBOL, fSym)
             return intent

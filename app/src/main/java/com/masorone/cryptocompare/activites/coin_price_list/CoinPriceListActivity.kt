@@ -28,7 +28,7 @@ class CoinPriceListActivity : AppCompatActivity() {
         observePriceList()
         coinInfoAdapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
             override fun onCoinClick(coin: CoinPriceInfo) {
-                intent = CoinDetailActivity.getIntent(this@CoinPriceListActivity, coin.fromSymbol)
+                intent = CoinDetailActivity.newIntent(this@CoinPriceListActivity, coin.fromSymbol)
                 startActivity(intent)
             }
         }
