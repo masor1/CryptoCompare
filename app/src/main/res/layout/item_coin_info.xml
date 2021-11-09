@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardUseCompatPadding="true"
+    android:layout_marginTop="2dp"
+    app:cardBackgroundColor="@color/card_bg"
     app:cardCornerRadius="16dp"
-    android:layout_margin="4dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -25,35 +26,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:textSize="16dp"
-            android:textColor="@color/black"
-            android:text="BTC / USD"
-            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/btc_usd"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:textSize="21dp"
-            android:textColor="@color/black"
+            android:text="@string/price_7500_52"
+            android:textColor="@color/white"
+            android:textSize="21sp"
             android:textStyle="bold"
-            android:text="7500.52"
-            app:layout_constraintTop_toBottomOf="@+id/tvSymbols"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/tvSymbols" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTimeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Время последнего обновления:"
-            android:textColor="@color/black"
-            android:textSize="16dp"
+            android:layout_marginEnd="16dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
+            android:text="@string/time_last_update"
+            android:textColor="@color/white"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
@@ -62,13 +64,14 @@
             android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            android:paddingLeft="8dp"
-            android:text="00:00:00"
-            android:textColor="@color/black"
-            android:textSize="16dp"
+            android:text="@string/time_00_00_00"
+            android:textColor="@color/white"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvTimeText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
