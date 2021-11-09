@@ -2,14 +2,24 @@ package com.masorone.cryptocompare.activites.coin_detail
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.masorone.cryptocompare.R
+import com.squareup.picasso.Picasso
 
 class CoinDetailActivity : AppCompatActivity() {
 
+    private lateinit var ivCoinLogo: ImageView
+    private lateinit var tvFSym: TextView
+    private lateinit var tvTSym: TextView
+    private lateinit var tvPrice: TextView
+    private lateinit var tvMinPrice: TextView
+    private lateinit var tvMaxPrice: TextView
+    private lateinit var tvLastMarket: TextView
+    private lateinit var tvTime: TextView
     private var fSym = ""
     private lateinit var vm: CoinDetailViewModel
 
@@ -24,6 +34,14 @@ class CoinDetailActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        ivCoinLogo = findViewById(R.id.ivCoinLogo)
+        tvFSym = findViewById(R.id.tvFSym)
+        tvTSym = findViewById(R.id.tvTSym)
+        tvPrice = findViewById(R.id.price_detail)
+        tvMinPrice = findViewById(R.id.min_price_detail)
+        tvMaxPrice = findViewById(R.id.max_price_detail)
+        tvLastMarket = findViewById(R.id.lastMarketDetail)
+        tvTime = findViewById(R.id.time_detail)
         initViewModel()
         fSym = intent.getStringExtra(COIN_FROM_SYMBOL) ?: ""
         observeDetailInfo(fSym = fSym)
@@ -31,7 +49,14 @@ class CoinDetailActivity : AppCompatActivity() {
 
     private fun observeDetailInfo(fSym: String) {
         vm.getDetailInfo(fSym).observe(this, {
-            Log.d(TAG, "CoinPriceInfo -> $it")
+            Picasso.get().load(it.getFullImageUrl()).into(ivCoinLogo)
+            tvFSym.text = it.fromSymbol
+            tvTSym.text = it.toSymbol
+            tvPrice.text = String.format("%.2f", it.price?.toFloat())
+            tvMinPrice.text = String.format("%.2f", it?.lowDay?.toFloat())
+            tvMaxPrice.text = String.format("%.2f", it?.highDay?.toFloat())
+            tvLastMarket.text = it.lastMarket
+            tvTime.text = it.getFormattedTime()
         })
     }
 
