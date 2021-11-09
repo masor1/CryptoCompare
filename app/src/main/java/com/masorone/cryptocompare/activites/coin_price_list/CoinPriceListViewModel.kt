@@ -1,8 +1,7 @@
-package com.masorone.cryptocompare
+package com.masorone.cryptocompare.activites.coin_price_list
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.masorone.cryptocompare.api.ApiFactory
@@ -13,7 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-class MainViewModel(context: Context) : ViewModel() {
+class CoinPriceListViewModel(context: Context) : ViewModel() {
 
     private var compositeDisposable = CompositeDisposable()
     private val db = CoinDatabase.getInstance(context)
@@ -21,10 +20,6 @@ class MainViewModel(context: Context) : ViewModel() {
 
     init {
         loadData()
-    }
-
-    fun getDetailInfo(fSym: String): LiveData<CoinPriceInfo> {
-        return db.coinPriceInfoDao().getPriceInfoAboutCoin(fSym = fSym)
     }
 
     private fun loadData() {
@@ -66,7 +61,7 @@ class MainViewModel(context: Context) : ViewModel() {
     }
 
     companion object {
-        private const val TAG = "MainViewModel"
+        private const val TAG = "CoinPriceListViewModel"
     }
 
     override fun onCleared() {

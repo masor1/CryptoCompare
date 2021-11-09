@@ -1,43 +1,44 @@
-package com.masorone.cryptocompare
+package com.masorone.cryptocompare.activites.coin_price_list
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.masorone.cryptocompare.R
+import com.masorone.cryptocompare.activites.coin_detail.CoinDetailActivity
 import com.masorone.cryptocompare.adapters.CoinInfoAdapter
 import com.masorone.cryptocompare.pojo.CoinPriceInfo
 
-class MainActivity : AppCompatActivity() {
+class CoinPriceListActivity : AppCompatActivity() {
 
     private val coinInfoAdapter = CoinInfoAdapter()
-    private lateinit var vm: MainViewModel
+    private lateinit var vm: CoinPriceListViewModel
     private lateinit var rvCoinPriceList: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_coin_price_list)
         initViewModel()
         init()
     }
 
     private fun init() {
         rvCoinPriceList = findViewById(R.id.rvCoinPriceList)
-        coinInfoAdapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
-            override fun onCoinClick(coin: CoinPriceInfo) {
-                Toast.makeText(applicationContext, coin.fromSymbol, Toast.LENGTH_SHORT).show()
-            }
-        }
         rvCoinPriceList.adapter = coinInfoAdapter
         observePriceList()
+        coinInfoAdapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
+            override fun onCoinClick(coin: CoinPriceInfo) {
+                intent = CoinDetailActivity.getIntent(this@CoinPriceListActivity, coin.fromSymbol)
+                startActivity(intent)
+            }
+        }
     }
 
     private fun initViewModel() {
         vm = ViewModelProvider(
             this,
-            MainViewModelFactory(context = applicationContext)
-        )[MainViewModel::class.java]
+            CoinPriceLIstViewModelFactory(context = applicationContext)
+        )[CoinPriceListViewModel::class.java]
     }
 
     private fun observePriceList() {
@@ -46,13 +47,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun observeDetailInfo() {
-        vm.getDetailInfo("BTC").observe(this, {
-            Log.d(TAG, "CoinPriceInfo -> $it")
-        })
-    }
-
     companion object {
-        private const val TAG = "MainActivity"
+        private const val TAG = "CoinPriceListActivity"
     }
 }
