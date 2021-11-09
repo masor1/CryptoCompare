@@ -5,4 +5,12 @@
     <string name="time_last_update">Время последнего обновления:</string>
     <string name="price_7500_52">7500.52</string>
     <string name="btc_usd">BTC / USD</string>
+    <string name="slash">/</string>
+    <string name="usd">USD</string>
+    <string name="btc">BTC</string>
+    <string name="price">Цена:</string>
+    <string name="min_price">Минимальная цена за день:</string>
+    <string name="max_price">Максимальная цена за день:</string>
+    <string name="last_market">Последняя сделка:</string>
+    <string name="update">Обновлено :</string>
 </resources>
