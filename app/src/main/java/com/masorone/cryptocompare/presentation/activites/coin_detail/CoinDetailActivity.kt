@@ -8,8 +8,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.masorone.cryptocompare.R
-import com.masorone.cryptocompare.data.network.ApiFactory.BASE_IMAGE_URL
-import com.masorone.cryptocompare.utils.convertTimestampToTime
 import com.squareup.picasso.Picasso
 
 class CoinDetailActivity : AppCompatActivity() {
@@ -57,13 +55,12 @@ class CoinDetailActivity : AppCompatActivity() {
         vm.getDetailInfo(fSym).observe(this) {
             tvFSym.text = it.fromSymbol
             tvTSym.text = it.toSymbol
-            tvPrice.text = String.format("%.2f", it.price?.toFloat())
+            tvPrice.text = String.format("%.2f", it.price.toFloat())
             tvMinPrice.text = String.format("%.2f", it?.lowDay?.toFloat())
             tvMaxPrice.text = String.format("%.2f", it?.highDay?.toFloat())
             tvLastMarket.text = it.lastMarket
-            tvTime.text = convertTimestampToTime(it.lastUpdate?.toLong())
-            Picasso.get().load(BASE_IMAGE_URL + it.imageUrl).into(ivCoinLogo)
-
+            tvTime.text = it.lastUpdate
+            Picasso.get().load(it.imageUrl).into(ivCoinLogo)
         }
     }
 

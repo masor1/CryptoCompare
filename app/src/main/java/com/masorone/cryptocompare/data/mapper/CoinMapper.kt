@@ -6,6 +6,9 @@ import com.masorone.cryptocompare.data.network.model.CoinInfoDto
 import com.masorone.cryptocompare.data.network.model.CoinInfoJsonContainerDto
 import com.masorone.cryptocompare.data.network.model.CoinNameListDto
 import com.masorone.cryptocompare.domain.CoinInfo
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CoinMapper {
 
@@ -13,11 +16,11 @@ class CoinMapper {
         dto.fromSymbol,
         dto.toSymbol,
         dto.price,
-        dto.lastUpdate,
+        dto.lastUpdate.toLong(),
         dto.highDay,
         dto.lowDay,
         dto.lastMarket,
-        dto.imageUrl
+        BASE_IMAGE_URL + dto.imageUrl
     )
 
     fun mapJsonContainerToListCoinInfo(jsonContainer: CoinInfoJsonContainerDto): List<CoinInfoDto> {
@@ -46,11 +49,26 @@ class CoinMapper {
     fun mapDbToEntity(db: CoinInfoDb) = CoinInfo(
         db.fromSymbol,
         db.toSymbol,
-        db.price,
-        db.lastUpdate,
-        db.highDay,
-        db.lowDay,
+        db.price.toString(),
+        convertTimestampToTime(db.lastUpdate),
+        db.highDay.toString(),
+        db.lowDay.toString(),
         db.lastMarket,
         db.imageUrl
     )
+
+    private fun convertTimestampToTime(timestamp: Long?): String {
+        if (timestamp == null) return ""
+        val stamp = Timestamp(timestamp * 1000)
+        val date = Date(stamp.time)
+        val pattern = "HH:mm:ss"
+        val sdf = SimpleDateFormat(pattern, Locale.getDefault())
+        sdf.timeZone = TimeZone.getDefault()
+        return sdf.format(date)
+    }
+
+    companion object {
+
+        private const val BASE_IMAGE_URL = "https://cryptocompare.com/"
+    }
 }

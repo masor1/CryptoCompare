@@ -5,10 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.masorone.cryptocompare.R
+import com.masorone.cryptocompare.domain.CoinInfo
 import com.masorone.cryptocompare.presentation.activites.coin_detail.CoinDetailActivity
 import com.masorone.cryptocompare.presentation.adapters.CoinInfoAdapter
-import com.masorone.cryptocompare.data.network.model.CoinInfoDto
-import com.masorone.cryptocompare.domain.CoinInfo
 
 class CoinPriceListActivity : AppCompatActivity() {
 

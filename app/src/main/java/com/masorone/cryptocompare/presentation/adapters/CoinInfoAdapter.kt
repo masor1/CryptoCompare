@@ -8,10 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.masorone.cryptocompare.R
-import com.masorone.cryptocompare.data.network.ApiFactory.BASE_IMAGE_URL
-import com.masorone.cryptocompare.data.network.model.CoinInfoDto
 import com.masorone.cryptocompare.domain.CoinInfo
-import com.masorone.cryptocompare.utils.convertTimestampToTime
 import com.squareup.picasso.Picasso
 
 class CoinInfoAdapter : RecyclerView.Adapter<CoinInfoAdapter.CoinViewHolder>() {
@@ -54,9 +51,9 @@ class CoinInfoAdapter : RecyclerView.Adapter<CoinInfoAdapter.CoinViewHolder>() {
                 coinDto.fromSymbol,
                 coinDto.toSymbol
             )
-            tvPrice.text = coinDto.price.toString()
-            tvTime.text = convertTimestampToTime(coinDto.lastUpdate?.toLong())
-            Picasso.get().load(BASE_IMAGE_URL + coinDto.imageUrl).into(ivLogoCoin)
+            tvPrice.text = coinDto.price
+            tvTime.text = coinDto.lastUpdate
+            Picasso.get().load(coinDto.imageUrl).into(ivLogoCoin)
             itemView.setOnClickListener {
                 onCoinClickListener?.onCoinClick(coinDto)
             }
