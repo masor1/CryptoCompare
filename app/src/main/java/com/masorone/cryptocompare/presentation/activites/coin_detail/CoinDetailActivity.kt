@@ -1,4 +1,4 @@
-package com.masorone.cryptocompare.activites.coin_detail
+package com.masorone.cryptocompare.presentation.activites.coin_detail
 
 import android.content.Context
 import android.content.Intent
@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.masorone.cryptocompare.R
+import com.masorone.cryptocompare.data.network.ApiFactory.BASE_IMAGE_URL
+import com.masorone.cryptocompare.utils.convertTimestampToTime
 import com.squareup.picasso.Picasso
 
 class CoinDetailActivity : AppCompatActivity() {
@@ -21,6 +23,7 @@ class CoinDetailActivity : AppCompatActivity() {
     private lateinit var tvLastMarket: TextView
     private lateinit var tvTime: TextView
     private var fSym = ""
+
     private lateinit var vm: CoinDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +33,7 @@ class CoinDetailActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        vm = ViewModelProvider(this, CoinDetailViewModelFactory(this))[CoinDetailViewModel::class.java]
+        vm = ViewModelProvider(this)[CoinDetailViewModel::class.java]
     }
 
     private fun init() {
@@ -42,22 +45,26 @@ class CoinDetailActivity : AppCompatActivity() {
         tvMaxPrice = findViewById(R.id.max_price_detail)
         tvLastMarket = findViewById(R.id.lastMarketDetail)
         tvTime = findViewById(R.id.time_detail)
+
         initViewModel()
+
         fSym = intent.getStringExtra(COIN_FROM_SYMBOL) ?: ""
-        observeDetailInfo(fSym = fSym)
+        observeDetailInfo(fSym)
     }
 
     private fun observeDetailInfo(fSym: String) {
-        vm.getDetailInfo(fSym).observe(this, {
-            Picasso.get().load(it.getFullImageUrl()).into(ivCoinLogo)
+
+        vm.getDetailInfo(fSym).observe(this) {
             tvFSym.text = it.fromSymbol
             tvTSym.text = it.toSymbol
             tvPrice.text = String.format("%.2f", it.price?.toFloat())
             tvMinPrice.text = String.format("%.2f", it?.lowDay?.toFloat())
             tvMaxPrice.text = String.format("%.2f", it?.highDay?.toFloat())
             tvLastMarket.text = it.lastMarket
-            tvTime.text = it.getFormattedTime()
-        })
+            tvTime.text = convertTimestampToTime(it.lastUpdate?.toLong())
+            Picasso.get().load(BASE_IMAGE_URL + it.imageUrl).into(ivCoinLogo)
+
+        }
     }
 
     companion object {

@@ -1,13 +1,14 @@
-package com.masorone.cryptocompare.activites.coin_price_list
+package com.masorone.cryptocompare.presentation.activites.coin_price_list
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.masorone.cryptocompare.R
-import com.masorone.cryptocompare.activites.coin_detail.CoinDetailActivity
-import com.masorone.cryptocompare.adapters.CoinInfoAdapter
-import com.masorone.cryptocompare.pojo.CoinPriceInfo
+import com.masorone.cryptocompare.presentation.activites.coin_detail.CoinDetailActivity
+import com.masorone.cryptocompare.presentation.adapters.CoinInfoAdapter
+import com.masorone.cryptocompare.data.network.model.CoinInfoDto
+import com.masorone.cryptocompare.domain.CoinInfo
 
 class CoinPriceListActivity : AppCompatActivity() {
 
@@ -27,24 +28,22 @@ class CoinPriceListActivity : AppCompatActivity() {
         rvCoinPriceList.adapter = coinInfoAdapter
         observePriceList()
         coinInfoAdapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
-            override fun onCoinClick(coin: CoinPriceInfo) {
-                intent = CoinDetailActivity.newIntent(this@CoinPriceListActivity, coin.fromSymbol)
+            override fun onCoinClick(coinDto: CoinInfo) {
+                intent =
+                    CoinDetailActivity.newIntent(this@CoinPriceListActivity, coinDto.fromSymbol)
                 startActivity(intent)
             }
         }
     }
 
     private fun initViewModel() {
-        vm = ViewModelProvider(
-            this,
-            CoinPriceLIstViewModelFactory(context = applicationContext)
-        )[CoinPriceListViewModel::class.java]
+        vm = ViewModelProvider(this)[CoinPriceListViewModel::class.java]
     }
 
     private fun observePriceList() {
-        vm.priceList.observe(this, {
+        vm.coinInfoList.observe(this) {
             coinInfoAdapter.coinInfoList = it
-        })
+        }
     }
 
     companion object {

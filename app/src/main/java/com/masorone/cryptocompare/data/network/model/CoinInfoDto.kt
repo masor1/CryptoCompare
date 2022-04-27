@@ -1,14 +1,14 @@
-package com.masorone.cryptocompare.pojo
+package com.masorone.cryptocompare.data.network.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.masorone.cryptocompare.api.ApiFactory.BASE_IMAGE_URL
+import com.masorone.cryptocompare.data.network.ApiFactory.BASE_IMAGE_URL
 import com.masorone.cryptocompare.utils.convertTimestampToTime
 
 @Entity(tableName = "full_price_list")
-data class CoinPriceInfo(
+data class CoinInfoDto(
     @SerializedName("TYPE")
     @Expose
     val type: String? = null,

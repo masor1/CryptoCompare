@@ -1,12 +1,11 @@
-package com.masorone.cryptocompare.db
+package com.masorone.cryptocompare.data.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.masorone.cryptocompare.pojo.CoinPriceInfo
 
-@Database(entities = [CoinPriceInfo::class], version = 1, exportSchema = false)
+@Database(entities = [CoinInfoDb::class], version = 1, exportSchema = false)
 abstract class CoinDatabase : RoomDatabase() {
     companion object {
 
@@ -24,5 +23,6 @@ abstract class CoinDatabase : RoomDatabase() {
             }
         }
     }
-    abstract fun coinPriceInfoDao(): CoinPriceInfoDao
+
+    abstract fun coinPriceInfoDao(): CoinInfoDao
 }

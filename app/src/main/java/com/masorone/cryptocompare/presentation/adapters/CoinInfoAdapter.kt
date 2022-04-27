@@ -1,4 +1,4 @@
-package com.masorone.cryptocompare.adapters
+package com.masorone.cryptocompare.presentation.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -8,12 +8,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.masorone.cryptocompare.R
-import com.masorone.cryptocompare.pojo.CoinPriceInfo
+import com.masorone.cryptocompare.data.network.ApiFactory.BASE_IMAGE_URL
+import com.masorone.cryptocompare.data.network.model.CoinInfoDto
+import com.masorone.cryptocompare.domain.CoinInfo
+import com.masorone.cryptocompare.utils.convertTimestampToTime
 import com.squareup.picasso.Picasso
 
 class CoinInfoAdapter : RecyclerView.Adapter<CoinInfoAdapter.CoinViewHolder>() {
 
-    var coinInfoList = listOf<CoinPriceInfo>()
+    var coinInfoList = listOf<CoinInfo>()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
@@ -34,7 +37,7 @@ class CoinInfoAdapter : RecyclerView.Adapter<CoinInfoAdapter.CoinViewHolder>() {
 
     override fun onBindViewHolder(holder: CoinViewHolder, position: Int) {
         val coin = coinInfoList[position]
-        holder.bind(coin = coin)
+        holder.bind(coin)
     }
 
     override fun getItemCount() = coinInfoList.size
@@ -45,22 +48,22 @@ class CoinInfoAdapter : RecyclerView.Adapter<CoinInfoAdapter.CoinViewHolder>() {
         private val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
         private val tvTime: TextView = itemView.findViewById(R.id.tvTime)
 
-        fun bind(coin: CoinPriceInfo) {
+        fun bind(coinDto: CoinInfo) {
             tvSymbols.text = String.format(
                 itemView.resources.getString(R.string.symbols_template),
-                coin.fromSymbol,
-                coin.toSymbol
+                coinDto.fromSymbol,
+                coinDto.toSymbol
             )
-            tvPrice.text = coin.price.toString()
-            tvTime.text = coin.getFormattedTime()
-            Picasso.get().load(coin.getFullImageUrl()).into(ivLogoCoin)
+            tvPrice.text = coinDto.price.toString()
+            tvTime.text = convertTimestampToTime(coinDto.lastUpdate?.toLong())
+            Picasso.get().load(BASE_IMAGE_URL + coinDto.imageUrl).into(ivLogoCoin)
             itemView.setOnClickListener {
-                onCoinClickListener?.onCoinClick(coin)
+                onCoinClickListener?.onCoinClick(coinDto)
             }
         }
     }
 
     interface OnCoinClickListener {
-        fun onCoinClick(coin: CoinPriceInfo)
+        fun onCoinClick(coinDto: CoinInfo)
     }
 }

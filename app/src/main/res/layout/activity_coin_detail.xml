@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/detail_bg"
-    tools:context=".activites.coin_detail.CoinDetailActivity">
+    tools:context=".presentation.activites.coin_detail.CoinDetailActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivCoinLogo"
