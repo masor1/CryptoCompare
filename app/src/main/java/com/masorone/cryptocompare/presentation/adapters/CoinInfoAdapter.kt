@@ -20,15 +20,13 @@ class CoinInfoAdapter : RecyclerView.Adapter<CoinInfoAdapter.CoinViewHolder>() {
 
     var onCoinClickListener: OnCoinClickListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinViewHolder {
-        return CoinViewHolder(
-            ItemCoinInfoBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CoinViewHolder(
+        ItemCoinInfoBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
-    }
+    )
 
     override fun onBindViewHolder(holder: CoinViewHolder, position: Int) {
         val coin = coinInfoList[position]
@@ -37,23 +35,22 @@ class CoinInfoAdapter : RecyclerView.Adapter<CoinInfoAdapter.CoinViewHolder>() {
 
     override fun getItemCount() = coinInfoList.size
 
-    inner class CoinViewHolder(private val binding: ItemCoinInfoBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class CoinViewHolder(
+        private val binding: ItemCoinInfoBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(coinDto: CoinInfo) {
-            binding.tvSymbols.text = String.format(
+        fun bind(coinDto: CoinInfo) = with(binding) {
+            tvSymbols.text = String.format(
                 itemView.resources.getString(R.string.symbols_template),
                 coinDto.fromSymbol,
                 coinDto.toSymbol
             )
-            binding.tvPrice.text = coinDto.price
-            binding.tvTime.text = coinDto.lastUpdate
-
-            Picasso.get().load(coinDto.imageUrl).into(binding.ivLogoCoin)
-
-            itemView.setOnClickListener {
+            tvPrice.text = coinDto.price
+            tvTime.text = coinDto.lastUpdate
+            root.setOnClickListener {
                 onCoinClickListener?.onCoinClick(coinDto)
             }
+            Picasso.get().load(coinDto.imageUrl).into(ivLogoCoin)
         }
     }
 
