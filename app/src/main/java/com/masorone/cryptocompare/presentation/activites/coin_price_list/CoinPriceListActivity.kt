@@ -44,7 +44,7 @@ class CoinPriceListActivity : AppCompatActivity() {
 
     private fun observePriceList() {
         vm.coinInfoList.observe(this) {
-            coinInfoAdapter.coinInfoList = it
+            coinInfoAdapter.submitList(it)
         }
     }
 }

@@ -3,20 +3,14 @@ package com.masorone.cryptocompare.presentation.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.masorone.cryptocompare.R
 import com.masorone.cryptocompare.databinding.ItemCoinInfoBinding
 import com.masorone.cryptocompare.domain.CoinInfo
 import com.squareup.picasso.Picasso
 
-class CoinInfoAdapter : RecyclerView.Adapter<CoinInfoAdapter.CoinViewHolder>() {
-
-    var coinInfoList = listOf<CoinInfo>()
-        @SuppressLint("NotifyDataSetChanged")
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+class CoinInfoAdapter : ListAdapter<CoinInfo, CoinInfoAdapter.CoinViewHolder>(CoinInfoDiffUtil()) {
 
     var onCoinClickListener: OnCoinClickListener? = null
 
@@ -29,11 +23,9 @@ class CoinInfoAdapter : RecyclerView.Adapter<CoinInfoAdapter.CoinViewHolder>() {
     )
 
     override fun onBindViewHolder(holder: CoinViewHolder, position: Int) {
-        val coin = coinInfoList[position]
+        val coin = getItem(position)
         holder.bind(coin)
     }
-
-    override fun getItemCount() = coinInfoList.size
 
     inner class CoinViewHolder(
         private val binding: ItemCoinInfoBinding
