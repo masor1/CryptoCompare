@@ -3,29 +3,32 @@ package com.masorone.cryptocompare.presentation.activites.coin_price_list
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
-import com.masorone.cryptocompare.R
+import com.masorone.cryptocompare.databinding.ActivityCoinPriceListBinding
 import com.masorone.cryptocompare.domain.CoinInfo
 import com.masorone.cryptocompare.presentation.activites.coin_detail.CoinDetailActivity
 import com.masorone.cryptocompare.presentation.adapters.CoinInfoAdapter
 
 class CoinPriceListActivity : AppCompatActivity() {
 
-    private val coinInfoAdapter = CoinInfoAdapter()
+    private lateinit var binding: ActivityCoinPriceListBinding
+
+    private lateinit var coinInfoAdapter: CoinInfoAdapter
     private lateinit var vm: CoinPriceListViewModel
-    private lateinit var rvCoinPriceList: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_coin_price_list)
+        binding = ActivityCoinPriceListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         initViewModel()
         init()
     }
 
     private fun init() {
-        rvCoinPriceList = findViewById(R.id.rvCoinPriceList)
-        rvCoinPriceList.adapter = coinInfoAdapter
+        coinInfoAdapter = CoinInfoAdapter()
+        binding.rvCoinPriceList.adapter = coinInfoAdapter
+
         observePriceList()
+
         coinInfoAdapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
             override fun onCoinClick(coinDto: CoinInfo) {
                 intent =
@@ -43,9 +46,5 @@ class CoinPriceListActivity : AppCompatActivity() {
         vm.coinInfoList.observe(this) {
             coinInfoAdapter.coinInfoList = it
         }
-    }
-
-    companion object {
-        private const val TAG = "CoinPriceListActivity"
     }
 }

@@ -3,30 +3,22 @@ package com.masorone.cryptocompare.presentation.activites.coin_detail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.masorone.cryptocompare.R
+import com.masorone.cryptocompare.databinding.ActivityCoinDetailBinding
 import com.squareup.picasso.Picasso
 
 class CoinDetailActivity : AppCompatActivity() {
 
-    private lateinit var ivCoinLogo: ImageView
-    private lateinit var tvFSym: TextView
-    private lateinit var tvTSym: TextView
-    private lateinit var tvPrice: TextView
-    private lateinit var tvMinPrice: TextView
-    private lateinit var tvMaxPrice: TextView
-    private lateinit var tvLastMarket: TextView
-    private lateinit var tvTime: TextView
     private var fSym = ""
 
+    private lateinit var binding: ActivityCoinDetailBinding
     private lateinit var vm: CoinDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_coin_detail)
+        binding = ActivityCoinDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         init()
     }
 
@@ -35,15 +27,6 @@ class CoinDetailActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        ivCoinLogo = findViewById(R.id.ivCoinLogo)
-        tvFSym = findViewById(R.id.tvFSym)
-        tvTSym = findViewById(R.id.tvTSym)
-        tvPrice = findViewById(R.id.price_detail)
-        tvMinPrice = findViewById(R.id.min_price_detail)
-        tvMaxPrice = findViewById(R.id.max_price_detail)
-        tvLastMarket = findViewById(R.id.lastMarketDetail)
-        tvTime = findViewById(R.id.time_detail)
-
         initViewModel()
 
         fSym = intent.getStringExtra(COIN_FROM_SYMBOL) ?: ""
@@ -51,22 +34,21 @@ class CoinDetailActivity : AppCompatActivity() {
     }
 
     private fun observeDetailInfo(fSym: String) {
-
         vm.getDetailInfo(fSym).observe(this) {
-            tvFSym.text = it.fromSymbol
-            tvTSym.text = it.toSymbol
-            tvPrice.text = String.format("%.2f", it.price.toFloat())
-            tvMinPrice.text = String.format("%.2f", it?.lowDay?.toFloat())
-            tvMaxPrice.text = String.format("%.2f", it?.highDay?.toFloat())
-            tvLastMarket.text = it.lastMarket
-            tvTime.text = it.lastUpdate
-            Picasso.get().load(it.imageUrl).into(ivCoinLogo)
+            binding.tvFSym.text = it.fromSymbol
+            binding.tvTSym.text = it.toSymbol
+            binding.priceDetail.text = String.format("%.2f", it.price.toFloat())
+            binding.minPriceDetail.text = String.format("%.2f", it?.lowDay?.toFloat())
+            binding.maxPriceDetail.text = String.format("%.2f", it?.highDay?.toFloat())
+            binding.lastMarketDetail.text = it.lastMarket
+            binding.timeDetail.text = it.lastUpdate
+            Picasso.get().load(it.imageUrl).into(binding.ivCoinLogo)
         }
     }
 
     companion object {
+
         private const val COIN_FROM_SYMBOL = "coin_from_symbol"
-        private const val TAG = "CoinDetailActivity"
 
         fun newIntent(context: Context, fSym: String): Intent {
             val intent = Intent(context, CoinDetailActivity::class.java)

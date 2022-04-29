@@ -2,12 +2,10 @@ package com.masorone.cryptocompare.presentation.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.masorone.cryptocompare.R
+import com.masorone.cryptocompare.databinding.ItemCoinInfoBinding
 import com.masorone.cryptocompare.domain.CoinInfo
 import com.squareup.picasso.Picasso
 
@@ -24,8 +22,8 @@ class CoinInfoAdapter : RecyclerView.Adapter<CoinInfoAdapter.CoinViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinViewHolder {
         return CoinViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.item_coin_info,
+            ItemCoinInfoBinding.inflate(
+                LayoutInflater.from(parent.context),
                 parent,
                 false
             )
@@ -39,21 +37,20 @@ class CoinInfoAdapter : RecyclerView.Adapter<CoinInfoAdapter.CoinViewHolder>() {
 
     override fun getItemCount() = coinInfoList.size
 
-    inner class CoinViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val ivLogoCoin: ImageView = itemView.findViewById(R.id.ivLogoCoin)
-        private val tvSymbols: TextView = itemView.findViewById(R.id.tvSymbols)
-        private val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
-        private val tvTime: TextView = itemView.findViewById(R.id.tvTime)
+    inner class CoinViewHolder(private val binding: ItemCoinInfoBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(coinDto: CoinInfo) {
-            tvSymbols.text = String.format(
+            binding.tvSymbols.text = String.format(
                 itemView.resources.getString(R.string.symbols_template),
                 coinDto.fromSymbol,
                 coinDto.toSymbol
             )
-            tvPrice.text = coinDto.price
-            tvTime.text = coinDto.lastUpdate
-            Picasso.get().load(coinDto.imageUrl).into(ivLogoCoin)
+            binding.tvPrice.text = coinDto.price
+            binding.tvTime.text = coinDto.lastUpdate
+
+            Picasso.get().load(coinDto.imageUrl).into(binding.ivLogoCoin)
+
             itemView.setOnClickListener {
                 onCoinClickListener?.onCoinClick(coinDto)
             }
@@ -61,6 +58,7 @@ class CoinInfoAdapter : RecyclerView.Adapter<CoinInfoAdapter.CoinViewHolder>() {
     }
 
     interface OnCoinClickListener {
+
         fun onCoinClick(coinDto: CoinInfo)
     }
 }
