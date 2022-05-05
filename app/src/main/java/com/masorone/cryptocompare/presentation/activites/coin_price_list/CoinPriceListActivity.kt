@@ -5,21 +5,29 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.masorone.cryptocompare.databinding.ActivityCoinPriceListBinding
 import com.masorone.cryptocompare.domain.CoinInfo
+import com.masorone.cryptocompare.presentation.App
 import com.masorone.cryptocompare.presentation.activites.coin_detail.CoinDetailActivity
 import com.masorone.cryptocompare.presentation.adapters.CoinInfoAdapter
+import javax.inject.Inject
 
 class CoinPriceListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCoinPriceListBinding
 
     private lateinit var coinInfoAdapter: CoinInfoAdapter
-    private lateinit var vm: CoinPriceListViewModel
+
+    @Inject
+    lateinit var vm: CoinPriceListViewModel
+
+    private val appComponent by lazy {
+        (application as App).appComponent
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCoinPriceListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initViewModel()
+        appComponent.inject(this)
         init()
     }
 
@@ -36,10 +44,6 @@ class CoinPriceListActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-    }
-
-    private fun initViewModel() {
-        vm = ViewModelProvider(this)[CoinPriceListViewModel::class.java]
     }
 
     private fun observePriceList() {

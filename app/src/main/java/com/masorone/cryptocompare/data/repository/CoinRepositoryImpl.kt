@@ -1,22 +1,23 @@
 package com.masorone.cryptocompare.data.repository
 
-import android.app.Application
+import android.content.Context
 import androidx.lifecycle.Transformations
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
 import com.masorone.cryptocompare.data.database.CoinDatabase
+import com.masorone.cryptocompare.data.database.CoinInfoDao
 import com.masorone.cryptocompare.data.mapper.CoinMapper
-import com.masorone.cryptocompare.data.network.ApiFactory
 import com.masorone.cryptocompare.data.worker.RefreshDataWorker
 import com.masorone.cryptocompare.domain.CoinRepository
-import kotlinx.coroutines.delay
+import javax.inject.Inject
 
-class CoinRepositoryImpl(
-    private val application: Application
+class CoinRepositoryImpl @Inject constructor(
+    private val context: Context,
+    private val database: CoinDatabase,
+    private val mapper: CoinMapper
 ) : CoinRepository {
 
-    private val coinInfoDao = CoinDatabase.getInstance(application).coinPriceInfoDao()
-    private val mapper = CoinMapper()
+    private val coinInfoDao = database.coinPriceInfoDao()
 
     override fun getCoinInfoList() =
         Transformations.map(coinInfoDao.getPriceList()) { listCoinInfoDb ->
@@ -31,7 +32,7 @@ class CoinRepositoryImpl(
         }
 
     override fun loadData() {
-        val workManager = WorkManager.getInstance(application)
+        val workManager = WorkManager.getInstance(context)
         workManager.enqueueUniqueWork(
             RefreshDataWorker.NAME,
             ExistingWorkPolicy.REPLACE,

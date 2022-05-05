@@ -6,29 +6,32 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.masorone.cryptocompare.databinding.ActivityCoinDetailBinding
+import com.masorone.cryptocompare.presentation.App
 import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
 class CoinDetailActivity : AppCompatActivity() {
 
     private var fSym = ""
 
-    private lateinit var binding: ActivityCoinDetailBinding
-    private lateinit var vm: CoinDetailViewModel
+    lateinit var binding: ActivityCoinDetailBinding
+
+    @Inject
+    lateinit var vm: CoinDetailViewModel
+
+    private val appComponent by lazy {
+        (application as App).appComponent
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCoinDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        appComponent.inject(this)
         init()
     }
 
-    private fun initViewModel() {
-        vm = ViewModelProvider(this)[CoinDetailViewModel::class.java]
-    }
-
     private fun init() {
-        initViewModel()
-
         fSym = intent.getStringExtra(COIN_FROM_SYMBOL) ?: ""
         observeDetailInfo(fSym)
     }
