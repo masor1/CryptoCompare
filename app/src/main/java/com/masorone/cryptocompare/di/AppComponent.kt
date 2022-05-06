@@ -6,14 +6,14 @@ import com.masorone.cryptocompare.presentation.activites.coin_price_list.CoinPri
 import dagger.BindsInstance
 import dagger.Component
 
-@Component(modules = [DataModule::class, DomainModule::class, ViewModelModule::class])
+@Component(modules = [DataModule::class, ViewModelModule::class])
 interface AppComponent {
 
     fun inject(coinPriceListActivity: CoinPriceListActivity)
     fun inject(coinDetailActivity: CoinDetailActivity)
 
     @Component.Factory
-    interface AppComponentFactory {
+    interface Factory {
 
         fun create(
             @BindsInstance context: Context

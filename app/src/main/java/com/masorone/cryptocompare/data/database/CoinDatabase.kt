@@ -7,6 +7,9 @@ import androidx.room.RoomDatabase
 
 @Database(entities = [CoinInfoDb::class], version = 1, exportSchema = false)
 abstract class CoinDatabase : RoomDatabase() {
+
+    abstract fun coinPriceInfoDao(): CoinInfoDao
+
     companion object {
 
         private const val DB_NAME = "coin.db"
@@ -23,6 +26,4 @@ abstract class CoinDatabase : RoomDatabase() {
             }
         }
     }
-
-    abstract fun coinPriceInfoDao(): CoinInfoDao
 }

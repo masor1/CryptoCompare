@@ -2,7 +2,6 @@ package com.masorone.cryptocompare.presentation.activites.coin_price_list
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.masorone.cryptocompare.databinding.ActivityCoinPriceListBinding
 import com.masorone.cryptocompare.domain.CoinInfo
 import com.masorone.cryptocompare.presentation.App
