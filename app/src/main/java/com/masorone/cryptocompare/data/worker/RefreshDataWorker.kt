@@ -5,19 +5,19 @@ import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
 import com.masorone.cryptocompare.data.database.CoinDatabase
+import com.masorone.cryptocompare.data.database.CoinInfoDao
 import com.masorone.cryptocompare.data.mapper.CoinMapper
 import com.masorone.cryptocompare.data.network.ApiFactory
+import com.masorone.cryptocompare.data.network.ApiService
 import kotlinx.coroutines.delay
 
 class RefreshDataWorker(
     context: Context,
-    workerParams: WorkerParameters
+    workerParams: WorkerParameters,
+    private val coinInfoDao: CoinInfoDao,
+    private val apiService: ApiService,
+    private val mapper: CoinMapper
 ) : CoroutineWorker(context, workerParams) {
-
-    private val coinInfoDao = CoinDatabase.getInstance(context).coinPriceInfoDao()
-    private val apiService = ApiFactory.apiService
-
-    private val mapper = CoinMapper()
 
     override suspend fun doWork(): Result {
         while (true) {
