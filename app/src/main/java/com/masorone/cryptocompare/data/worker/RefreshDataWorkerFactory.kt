@@ -7,8 +7,9 @@ import androidx.work.WorkerParameters
 import com.masorone.cryptocompare.data.database.CoinInfoDao
 import com.masorone.cryptocompare.data.mapper.CoinMapper
 import com.masorone.cryptocompare.data.network.ApiService
+import javax.inject.Inject
 
-class RefreshDataWorkerFactory(
+class RefreshDataWorkerFactory @Inject constructor(
     private val coinInfoDao: CoinInfoDao,
     private val apiService: ApiService,
     private val mapper: CoinMapper
